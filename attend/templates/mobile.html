@@ -45,14 +45,20 @@
             padding: 8px;
             margin-bottom: 8px;
         }
-        h1, h2 {
+        h1 a, h2 {
             font-weight: bold;
+        }
+        h1 a {
+            color: #000;
+            text-shadow: 0px 1px 0px #fff;
         }
         img {
             float: left;
             margin-right: 16px;
             margin-left: 8px;
             margin-bottom: 8px;
+            width: 50px;
+            height: 50px;
         }
         h2 {
             font-size: 18px;
@@ -70,7 +76,7 @@
         
         ul li {
             background: #efefef;
-            padding: 4px 8px;
+            padding: 8px;
             border-bottom: 1px solid #fff;
         }
         li:first-child {
@@ -78,6 +84,7 @@
         }
         li:last-child {
             -webkit-border-radius: 0px 0px 8px 8px;
+            border: none;
         }
         li:first-child:last-child {
             -webkit-border-radius: 8px;
@@ -96,7 +103,32 @@
         }
         
         #email_form {
-            display:none;
+            clear: both;
+            display: block;
+            margin: 8px;
+            background: #6ec435;
+            -webkit-border-radius: 8px;
+        }
+        #email_form.error {
+            background: #bd2612;
+        }
+        #email {
+            font-family: inherit;
+            display: block;
+            padding: 8px;
+            width: 90%;
+            background: none;
+            outline: none;
+            color: #fff;
+        }
+        input::-webkit-input-placeholder {
+            color: #fff;
+        }
+        #location {
+            background: #6ec435;
+        }
+        #location a, #location span {
+            color: #fff;
         }
         
 	</style>
@@ -104,7 +136,7 @@
 </head>
 <body>
     <div id="top">
-	    <h1>QR Attend</h1>
+	    <h1><a href="/">QR Attend</a></h1>
 	</div>
 	
 	<div id="content">
@@ -112,15 +144,10 @@
 	    <h2>{{ event.name }}</h2>
 	    <h3>{{ event.start_dt|date:"l, F j" }}</h3>
 	    
-	    <ul>
-	        <li>
-	            <a id="email_link" href="#">Email iCal Event!</a>
-	            <form id="email_form" action="/email/{{ event.id }}" method="post">
-	                {% csrf_token %}
-	                <input name="email" id="email" type="email">
-	            </form>
-	        </li>
-	    </ul>
+        <form id="email_form" action="/email/{{ event.id }}" method="post">
+            {% csrf_token %}
+            <input name="email" id="email" type="email" placeholder="Email iCal Event!">
+        </form>
 	    
 	    <ul>
 	        <li><span>host</span>
@@ -132,8 +159,12 @@
             <li><span>time</span>
                 <strong>{{ event.start_dt|date:"P" }}</strong>
             </li>
-            <li><a href="http://maps.google.com/?q={{ event.location|urlencode }}"><span>location</span>
-                <strong>{{ event.location }}</strong></a></li>
+            <li id="location">
+                <a href="http://maps.google.com/?q={{ event.location|urlencode }}">
+                    <span>location</span>
+                    <strong>{{ event.location }}</strong>
+                </a>
+            </li>
         </ul>
         
         <h3>Description</h3>
@@ -148,6 +179,21 @@
                 window.scrollTo(0, 1);
                 setTimeout(function () {window.scrollTo(0, 0);}, 0);
             }
+            
+            var email = location.href.split("?")[1].split("=")[1];
+            if (email.length > 0) {
+                $("#email").val(email);
+                $("#email_form").addClass("error");
+            }
+            
+            $("#email").bind("keyup", function() {
+                var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+                if (reg.test($("#email").val()) == false) {
+                    $("#email_form").addClass("error");
+                } else {
+                    $("#email_form").removeClass("error");
+                }   
+            });
             
 	        function orientation_changed () {
                 // Update the global variable for tracking current orientation.
@@ -166,11 +212,6 @@
                     setTimeout(hide_address_bar, 100);
                 }
             }
-            
-            $("#email_link").bind("click", function() {
-                $("#email_form").show();
-                return false;
-            });
             
 	        if($.os.ios) {
 	            window.addEventListener('orientationchange', orientation_changed, false);

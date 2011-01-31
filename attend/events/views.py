@@ -1,3 +1,4 @@
+from urllib import urlencode
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
@@ -5,13 +6,39 @@ from django.template import RequestContext
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from django.core import mail
+from django.core.validators import validate_email
+from django import forms
 from datetime import datetime
 from events.models import *
 import facebook
-import uuid
+
+ical = \
+"""BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+DTSTART:{0}
+DTEND:{1}
+SUMMARY:{2}
+LOCATION:{3}
+DESCRIPTION:{4}
+URL;VALUE=URI:http://www.facebook.com/event.php?eid={5}
+BEGIN:VALARM
+TRIGGER:-PT15M
+DESCRIPTION:QRAttend event reminder
+ACTION:DISPLAY
+END:VALARM
+END:VEVENT
+END:VCALENDAR
+"""
 
 def logged_in(request):
     return request.user.is_authenticated and request.user.is_active
+    
+# returns event object with added start_dt and end_dt parameters for convenience
+def start_end(event):
+    event["start_dt"] = datetime.strptime(event["start_time"], "%Y-%m-%dT%H:%M:%S")
+    event["end_dt"] = datetime.strptime(event["end_time"], "%Y-%m-%dT%H:%M:%S")
+    return event
 
 # custom render function, vars is a dictionary, request is the request object
 def render(template, vars, request):
@@ -33,18 +60,15 @@ def home(request):
         for db_event in FacebookEvent.objects.filter(facebook_user_id=fbuser["id"]):
             db_event_ids.append(db_event.facebook_event_id)
             new_db_event = request.facebook.graph.get_object(db_event.facebook_event_id)
-            new_db_event["start_dt"] = datetime.strptime(new_db_event["start_time"], "%Y-%m-%dT%H:%M:%S")
-            new_db_event["end_dt"] = datetime.strptime(new_db_event["end_time"], "%Y-%m-%dT%H:%M:%S")
+            new_db_event = start_end(new_db_event)
             db_events.append(new_db_event)
 
         for event in events["data"]:
-            event["start_dt"] = datetime.strptime(event["start_time"], "%Y-%m-%dT%H:%M:%S")
-            event["end_dt"] = datetime.strptime(event["end_time"], "%Y-%m-%dT%H:%M:%S")
+            event = start_end(event)
     
             if event["rsvp_status"] == u'attending' and event["start_dt"] > now:
                 new_event = request.facebook.graph.get_object(event["id"])
-                new_event["start_dt"] = datetime.strptime(event["start_time"], "%Y-%m-%dT%H:%M:%S")
-                new_event["end_dt"] = datetime.strptime(event["end_time"], "%Y-%m-%dT%H:%M:%S")
+                new_event = start_end(new_event)
         
                 if new_event["owner"]["id"] == fbuser["id"] and new_event["privacy"] == u'OPEN' and not new_event["id"] in db_event_ids: 
                     real_events.append(new_event)
@@ -61,9 +85,8 @@ def mobile(request, event_id):
     c = RequestContext(request)
     api = facebook.GraphAPI()
     event = api.get_object(event_id)
-    event["start_dt"] = datetime.strptime(event["start_time"], "%Y-%m-%dT%H:%M:%S")
-    event["end_dt"] = datetime.strptime(event["end_time"], "%Y-%m-%dT%H:%M:%S")
-    return render_to_response('mobile.html', {'event':event}, context_instance=c)
+    event = start_end(event)
+    return render('mobile.html', {'event':event}, request)
 
 def event(request,event_id):
     c = RequestContext(request)
@@ -79,48 +102,32 @@ def event(request,event_id):
     
     if event_obj:
         event = request.facebook.graph.get_object(event_id)
-        event["start_dt"] = datetime.strptime(event["start_time"], "%Y-%m-%dT%H:%M:%S")
-        event["end_dt"] = datetime.strptime(event["end_time"], "%Y-%m-%dT%H:%M:%S")
+        event = start_end(event)
         return render('event.html', {'event_id':event_id,'event_obj':event}, request)
     else:
         return render('no_event.html', {}, request)
 
 def email(request, event_id):
     if request.method == "POST":
-        api = facebook.GraphAPI()
-        event = api.get_object(event_id)
+        try:
+            addr = request.POST["email"].strip()
+            validate_email(addr)
+            
+            api = facebook.GraphAPI()
+            event = api.get_object(event_id)
+
+            content = ical.format("".join("".join(event["start_time"].split("-")).split(":")), 
+                                  "".join("".join(event["end_time"].split("-")).split(":")),
+                                  event["name"], event["location"], event["description"],
+                                  event["id"])
         
-        addr = request.POST["email"]
-    
-        content = """BEGIN:VCALENDAR
-        CALSCALE:GREGORIAN
-        X-WR-TIMEZONE;VALUE=TEXT:US/Eastern
-        METHOD:PUBLISH
-        PRODID:-//Apple Computer\, Inc//iCal 1.0//EN
-        X-WR-CALNAME;VALUE=TEXT:Example
-        VERSION:2.0
-        BEGIN:VEVENT
-        SEQUENCE:5
-        DTSTART;TZID=US/Eastern:{0}
-        DTSTAMP:{0}Z
-        SUMMARY:{1}
-        UID:{2}
-        DTEND;TZID=US/Eastern: {3}
-        BEGIN:VALARM
-        TRIGGER;VALUE=DURATION:-P1D
-        ACTION:DISPLAY
-        DESCRIPTION:Event reminder
-        END:VALARM
-        END:VEVENT
-        END:VCALENDAR""".format(event["start_time"].strip("-"), event["name"], str(uuid.uuid1()), event["end_time"].strip("-"))
+            email = mail.EmailMessage('Event from QREvents!', 'Hey there. Attached is the iCal event for {0}'.format(event["name"]),
+                                to=[addr])
+            email.attach("fbevent.ics", content, "text/calendar")
+            email.send()
         
-        connection = mail.get_connection()
-        
-        email = mail.EmailMessage('Event from QREvents!', 'Hey there. Attached is the iCal event for {0}'.format(event["name"]),
-                            to=[addr])
-        email.attach("fbevent.ics", content, "text/calendar")
-        email.send()
-        
-        return redirect(home)
+            return redirect('/m/'+event_id+"?success")
+        except forms.ValidationError:
+            return redirect('/m/'+event_id+"/?email="+urlencode(addr))
     
     

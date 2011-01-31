@@ -8,7 +8,7 @@
         {% for event in events %}
             {% if event.start_dt %}
                 <li><a href="/event/{{ event.id }}">
-                        <img src="http://graph.facebook.com/{{ event.id }}/picture">
+                        <img src="http://graph.facebook.com/{{ event.id }}/picture" width="50" height="50">
                         <p><strong>{{ event.name }}</strong>
                         <em>{{ event.location }}</em>
                         <em>{{ event.start_dt|date:"l, F j" }} 
@@ -30,7 +30,7 @@
         {% for db_event in db_events %}
             {% if db_event.start_dt %}
                 <li><a href="/event/{{ db_event.id }}">
-                        <img src="http://graph.facebook.com/{{ db_event.id }}/picture">
+                        <img src="http://graph.facebook.com/{{ db_event.id }}/picture" width="50" height="50">
                         <p><strong>{{ db_event.name }}</strong>
                         <em>{{ db_event.location }}</em>
                         <em>{{ db_event.start_dt|date:"l, F j" }} 
