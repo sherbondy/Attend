@@ -7,7 +7,7 @@
     <ul id="create_list">
         {% for event in events %}
             {% if event.start_dt %}
-                <li><a href="/create/{{ event.id }}">
+                <li><a href="/event/{{ event.id }}">
                         <img src="http://graph.facebook.com/{{ event.id }}/picture" 
                             width="50" height="50">
                         <p><strong>{{ event.name }}</strong>
