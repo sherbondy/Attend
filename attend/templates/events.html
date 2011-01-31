@@ -36,12 +36,36 @@
                         <em>{{ db_event.start_dt|date:"l, F j" }} 
                             {% if db_event.end_dt %} from {% else %} at {% endif %}
                              {{ db_event.start_dt|date:"P" }} 
-                             to {{ db_event.end_dt|date:"P" }}</em></p>
+                             to {{ db_event.end_dt|date:"P" }}</em>
+                        </p>
                     </a>
                 </li>
             {% endif %}
         {% empty %}
             <li>You have not created any QR codes.</li>
+        {% endfor %}
+    </ul>
+    
+    <h2>Events that my friends have made QR codes for:</h2>
+    
+    <ul id="friends_list">
+        {% for friend_event in friend_events %}
+            {% if friend_event.start_dt %}
+                <li><a href="/event/{{ friend_event.id }}">
+                        <img src="http://graph.facebook.com/{{ friend_event.id }}/picture">
+                        <p><strong>{{ friend_event.name }}</strong>
+                        <em>{{ friend_event.location }}</em>
+                        <em>{{ friend_event.start_dt|date:"l, F j" }} 
+                            {% if friend_event.end_dt %} from {% else %} at {% endif %}
+                             {{ friend_event.start_dt|date:"P" }} 
+                             to {{ friend_event.end_dt|date:"P" }}</em>
+                        </p>
+                    </a>
+                    created by <a target="_blank" href="http://www.facebook.com/profile.php?id={{ friend_event.friend_id }}">{{ friend_event.friend_name }}</a>
+                </li>
+            {% endif %}
+        {% empty %}
+            <li>Your friends have not created any QR codes. Tell them about qrattend.me!</li>
         {% endfor %}
     </ul>
 </div>
