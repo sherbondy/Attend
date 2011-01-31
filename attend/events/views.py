@@ -17,6 +17,20 @@ def home(request):
         real_events = []
         now = datetime.now()
 	
+	friends = request.facebook.graph.get_object("me/friends")
+	friend_hash = {}
+	for friend in friends["data"]:
+            friend_hash[friend["id"]]=friend["name"]
+	friend_events = []
+	for db_event in FacebookEvent.objects.all():
+	    if db_event.facebook_user_id in friend_hash:
+                friend_event = request.facebook.graph.get_object(db_event.facebook_event_id)
+                friend_event["start_dt"] = datetime.strptime(friend_event["start_time"], "%Y-%m-%dT%H:%M:%S")
+                friend_event["end_dt"] = datetime.strptime(friend_event["end_time"], "%Y-%m-%dT%H:%M:%S")
+                friend_event["friend_name"] = friend_hash[db_event.facebook_user_id]
+                friend_event["friend_id"] = db_event.facebook_user_id
+                friend_events.append(friend_event)
+	
 	db_events = []
 	db_event_ids = []
 	for db_event in FacebookEvent.objects.filter(facebook_user_id=fbuser["id"]):
@@ -39,7 +53,7 @@ def home(request):
                     real_events.append(new_event)
         
         return render_to_response('events.html', 
-                {'me':fbuser, 'events':real_events, 'db_events':db_events}, context_instance=c)
+			{'me':fbuser, 'events':real_events, 'db_events':db_events, 'friend_events':friend_events}, context_instance=c)
     else:
         return render_to_response('index.html', {}, context_instance=c)
 
