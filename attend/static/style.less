@@ -89,12 +89,40 @@ ul {
 }
 
 #user_info {
-    width: 640px;
     margin: 0 auto;
-    float: right;
+    width: 640px;
+    text-align: right;
+    margin-bottom: -32px;
     padding: 16px 0;
     
     a {
         color: #fff;
+        position: relative;
+        &:hover {
+            color: #efefef;
+        }
+        &:active {
+            top: 1px;
+        }
+    }
+}
+
+#create_list {
+    list-style: none;
+    
+    li {
+        clear: both;
+        margin-bottom: 8px;
+    }
+    img {
+        float:left;
+        border: 2px solid #6ec435;
+        margin-right: 16px;
+    }
+    a {
+        display: block;
+        overflow: hidden;
+        background: #fff;
+        color: darken(#6ec435, 10%);
     }
 }
