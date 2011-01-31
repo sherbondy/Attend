@@ -185,38 +185,38 @@ a:active {
 #user_info a:hover {
   color: #efefef;
 }
-#create_list, #db_list {
+#create_list, #db_list, #friends_list {
   list-style: none;
   margin-left: 0;
 }
-#create_list li, #db_list li {
+#create_list li, #db_list li, #friends_list li {
   clear: both;
   margin-bottom: 8px;
 }
-#create_list img, #db_list img {
+#create_list img, #db_list img, #friends_list img {
   float: left;
   margin-left: -50px;
 }
-#create_list a, #db_list a {
+#create_list a, #db_list a, #friends_list a {
   display: block;
   color: #579c2a;
   text-decoration: none;
 }
-#create_list a:hover p, #db_list a:hover p {
+#create_list a:hover p, #db_list a:hover p, #friends_list a:hover p {
   background: #6ec435;
   color: #fff;
 }
-#create_list p, #db_list p {
+#create_list p, #db_list p, #friends_list p {
   padding: 8px 16px;
   background: #fff;
   border-left: 2px solid #6ec435;
 }
-#create_list strong, #db_list strong {
+#create_list strong, #db_list strong, #friends_list strong {
   display: block;
   color: #000;
   font-weight: bold;
 }
-#create_list em, #db_list em {
+#create_list em, #db_list em, #friends_list em {
   display: block;
   font-size: 14px;
 }
