@@ -19,7 +19,7 @@ def home(request):
 	
 	db_events = []
 	db_event_ids = []
-	for db_event in FacebookEvent.objects.all():
+	for db_event in FacebookEvent.objects.filter(facebook_user_id=fbuser["id"]):
 	    db_event_ids.append(db_event.facebook_event_id)
             new_db_event = request.facebook.graph.get_object(db_event.facebook_event_id)
 	    new_db_event["start_dt"] = datetime.strptime(new_db_event["start_time"], "%Y-%m-%dT%H:%M:%S")
@@ -58,7 +58,19 @@ def mobile(request, event_id):
 def event(request,event_id):
     c = RequestContext(request)
     matches = FacebookEvent.objects.filter(facebook_event_id=event_id)
+    success = False
     if len(matches)==0:
-        event_obj = FacebookEvent(facebook_event_id=event_id)
-        event_obj.save()
-    return render_to_response('event.html', {'event_id':event_id}, context_instance=c)
+        if request.user.is_authenticated and request.user.is_active:
+            fbuser = request.facebook.graph.get_object("me")
+            fbevent = request.facebook.graph.get_object(event_id)
+            if fbevent["owner"]["id"]==fbuser["id"]: #create a QR code
+                event_obj = FacebookEvent(facebook_event_id=event_id,facebook_user_id=fbuser["id"])
+                event_obj.save()
+		success = True
+    else:
+        success = True
+    
+    if success == True:
+        return render_to_response('event.html', {'event_id':event_id}, context_instance=c)
+    else:
+        return render_to_response('no_event.html', context_instance=c)
