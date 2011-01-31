@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
@@ -15,4 +15,4 @@ def home(request):
 
 def logout_view(request):
     logout(request)
-    return HttpResponse("You're logged out.")
+    return redirect(home)
