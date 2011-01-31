@@ -1,0 +1,4 @@
+paths.py
+*.pyc
+attend/socialregistration/
+attend/attend.db
