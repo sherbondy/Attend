@@ -2,11 +2,11 @@
 
 {% block content %}
 <div id="events">
-    {{ me.first_name }}
     <ul id="e_list">
     {% for event in events %}
         {% if event.start_dt %}
-            <li><strong>{{ event.name }}</strong>
+            <li><img src="http://graph.facebook.com/{{ event.id }}/picture">
+                <strong>{{ event.name }}</strong>
                 <em>{{ event.location }}</em>
                 <em>{{ event.start_dt|date:"l, F j" }} 
                     {% if event.end_dt %} from {% else %} at {% endif %}
