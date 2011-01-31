@@ -3,9 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<title>QR Attend</title>
-	<link rel="stylesheet/less" href="/static/style.less" type="text/css">
+	<link rel="stylesheet" href="/static/style.css" type="text/css">
 	<link href='http://fonts.googleapis.com/css?family=Arvo:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
-	<script src="/static/less-1.0.41.min.js" type="text/javascript"></script>
 </head>
 <body>
     <div id="top">
@@ -26,10 +25,5 @@
 	    </p>
 	</footer>
 	
-	{% if debug == True %}
-	<script type="text/javascript">
-		var fresh = setInterval("less.refresh()", 500);
-	</script>
-	{% endif %}
 </body>
 </html>
