@@ -7,7 +7,7 @@
     <ul id="create_list">
         {% for event in events %}
             {% if event.start_dt %}
-                <li><a href="/create/{{ event.id }}">
+                <li><a href="/event/{{ event.id }}">
                         <img src="http://graph.facebook.com/{{ event.id }}/picture">
                         <p><strong>{{ event.name }}</strong>
                         <em>{{ event.location }}</em>
@@ -31,12 +31,13 @@
             {% if db_event.start_dt %}
                 <li><a href="/event/{{ db_event.id }}">
                         <img src="http://graph.facebook.com/{{ db_event.id }}/picture">
-                        <strong>{{ db_event.name }}</strong>
+                        <p><strong>{{ db_event.name }}</strong>
                         <em>{{ db_event.location }}</em>
                         <em>{{ db_event.start_dt|date:"l, F j" }} 
                             {% if db_event.end_dt %} from {% else %} at {% endif %}
                              {{ db_event.start_dt|date:"P" }} 
                              to {{ db_event.end_dt|date:"P" }}</em>
+                        </p>
                     </a>
                 </li>
             {% endif %}
@@ -52,13 +53,15 @@
             {% if friend_event.start_dt %}
                 <li><a href="/event/{{ friend_event.id }}">
                         <img src="http://graph.facebook.com/{{ friend_event.id }}/picture">
-                        <strong>{{ friend_event.name }}</strong>
+                        <p><strong>{{ friend_event.name }}</strong>
                         <em>{{ friend_event.location }}</em>
                         <em>{{ friend_event.start_dt|date:"l, F j" }} 
                             {% if friend_event.end_dt %} from {% else %} at {% endif %}
                              {{ friend_event.start_dt|date:"P" }} 
                              to {{ friend_event.end_dt|date:"P" }}</em>
-                    </a>created by <a target="_blank" href="http://www.facebook.com/profile.php?id={{ friend_event.friend_id }}">{{ friend_event.friend_name }}</a>
+                        </p>
+                    </a>
+                    created by <a target="_blank" href="http://www.facebook.com/profile.php?id={{ friend_event.friend_id }}">{{ friend_event.friend_name }}</a>
                 </li>
             {% endif %}
         {% empty %}
