@@ -10,54 +10,48 @@ from events.models import *
 import facebook
 import uuid
 
-def home(request):
+def logged_in(request):
+    return request.user.is_authenticated and request.user.is_active
+
+# custom render function, vars is a dictionary, request is the request object
+def render(template, vars, request):
     c = RequestContext(request)
-    
-    if request.user.is_authenticated and request.user.is_active:
+    if logged_in(request):
+        vars["me"] = request.facebook.graph.get_object("me")
+    return render_to_response(template, vars, context_instance=c)
+        
+
+def home(request):    
+    if logged_in(request):
         fbuser = request.facebook.graph.get_object("me")
         events = request.facebook.graph.get_connections("me", "events")
         real_events = []
         now = datetime.now()
-	
-	friends = request.facebook.graph.get_object("me/friends")
-	friend_hash = {}
-	for friend in friends["data"]:
-            friend_hash[friend["id"]]=friend["name"]
-	friend_events = []
-	for db_event in FacebookEvent.objects.all():
-	    if db_event.facebook_user_id in friend_hash:
-                friend_event = request.facebook.graph.get_object(db_event.facebook_event_id)
-                friend_event["start_dt"] = datetime.strptime(friend_event["start_time"], "%Y-%m-%dT%H:%M:%S")
-                friend_event["end_dt"] = datetime.strptime(friend_event["end_time"], "%Y-%m-%dT%H:%M:%S")
-                friend_event["friend_name"] = friend_hash[db_event.facebook_user_id]
-                friend_event["friend_id"] = db_event.facebook_user_id
-                friend_events.append(friend_event)
-	
-	db_events = []
-	db_event_ids = []
-	for db_event in FacebookEvent.objects.filter(facebook_user_id=fbuser["id"]):
-	    db_event_ids.append(db_event.facebook_event_id)
+
+        db_events = []
+        db_event_ids = []
+        for db_event in FacebookEvent.objects.filter(facebook_user_id=fbuser["id"]):
+            db_event_ids.append(db_event.facebook_event_id)
             new_db_event = request.facebook.graph.get_object(db_event.facebook_event_id)
-	    new_db_event["start_dt"] = datetime.strptime(new_db_event["start_time"], "%Y-%m-%dT%H:%M:%S")
+            new_db_event["start_dt"] = datetime.strptime(new_db_event["start_time"], "%Y-%m-%dT%H:%M:%S")
             new_db_event["end_dt"] = datetime.strptime(new_db_event["end_time"], "%Y-%m-%dT%H:%M:%S")
-	    db_events.append(new_db_event)
+            db_events.append(new_db_event)
 
         for event in events["data"]:
             event["start_dt"] = datetime.strptime(event["start_time"], "%Y-%m-%dT%H:%M:%S")
             event["end_dt"] = datetime.strptime(event["end_time"], "%Y-%m-%dT%H:%M:%S")
-            
+    
             if event["rsvp_status"] == u'attending' and event["start_dt"] > now:
                 new_event = request.facebook.graph.get_object(event["id"])
                 new_event["start_dt"] = datetime.strptime(event["start_time"], "%Y-%m-%dT%H:%M:%S")
                 new_event["end_dt"] = datetime.strptime(event["end_time"], "%Y-%m-%dT%H:%M:%S")
-                
+        
                 if new_event["owner"]["id"] == fbuser["id"] and new_event["privacy"] == u'OPEN' and not new_event["id"] in db_event_ids: 
                     real_events.append(new_event)
-        
-        return render_to_response('events.html', 
-			{'me':fbuser, 'events':real_events, 'db_events':db_events, 'friend_events':friend_events}, context_instance=c)
+    
+        return render('events.html', {'me':fbuser, 'events':real_events, 'db_events':db_events}, request)
     else:
-        return render_to_response('index.html', {}, context_instance=c)
+        return render('index.html', {}, request)
 
 def logout_view(request):
     logout(request)
@@ -73,26 +67,23 @@ def mobile(request, event_id):
 
 def event(request,event_id):
     c = RequestContext(request)
-    matches = FacebookEvent.objects.filter(facebook_event_id=event_id)
-    success = False
-    if len(matches)==0:
-        if request.user.is_authenticated and request.user.is_active:
+    try:
+        event_obj = FacebookEvent.objects.get(facebook_event_id=event_id)
+    except FacebookEvent.DoesNotExist:
+        if logged_in(request):
             fbuser = request.facebook.graph.get_object("me")
             fbevent = request.facebook.graph.get_object(event_id)
             if fbevent["owner"]["id"]==fbuser["id"]: #create a QR code
                 event_obj = FacebookEvent(facebook_event_id=event_id,facebook_user_id=fbuser["id"])
                 event_obj.save()
-		success = True
-    else:
-        success = True
     
-    if success == True:
+    if event_obj:
         event = request.facebook.graph.get_object(event_id)
         event["start_dt"] = datetime.strptime(event["start_time"], "%Y-%m-%dT%H:%M:%S")
         event["end_dt"] = datetime.strptime(event["end_time"], "%Y-%m-%dT%H:%M:%S")
-	return render_to_response('event.html', {'event_id':event_id,'event_obj':event}, context_instance=c)
+        return render('event.html', {'event_id':event_id,'event_obj':event}, request)
     else:
-        return render_to_response('no_event.html', context_instance=c)
+        return render('no_event.html', {}, request)
 
 def email(request, event_id):
     if request.method == "POST":

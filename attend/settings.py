@@ -13,7 +13,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'attend.db',             # Or path to database file if using sqlite3.
+        'NAME': '/Users/ethan/Attend/attend/attend.db',             # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -61,9 +61,13 @@ ADMIN_MEDIA_PREFIX = '/media/'
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '-dwx5_cn#7otil(r8972%cfx!^67-dgnbobs1u2va%d)ovupmv'
 
-# Facebook stuff for socialregistration
-FACEBOOK_API_KEY = '1fc564e316561440c9cac4df714c095f'
-FACEBOOK_SECRET_KEY = '4fe10cca8e371150423cb64d71ebc240'
+# Facebook stuff for socialregistration, These are the real ones:
+# FACEBOOK_API_KEY = '1fc564e316561440c9cac4df714c095f'
+# FACEBOOK_SECRET_KEY = '4fe10cca8e371150423cb64d71ebc240'
+
+# Development version
+FACEBOOK_API_KEY = '8a2f64d82b849a96e1f694f3dd8882b3'
+FACEBOOK_SECRET_KEY = '15e67f22052e8ef1bdb17c4528953abf'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
@@ -114,11 +118,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
 )
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = '587'
 EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
-EMAIL_HOST_PASSWORD = 'TEe6p22s92'
-EMAIL_HOST_USER = 'iam@tooepic.com'
 
 LOGIN_REDIRECT_URL = '/'
 
