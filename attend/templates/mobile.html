@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	<title>QR Attend: {{ event.name }}</title>
 	<link rel="apple-touch-icon" href="http://graph.facebook.com/{{ event.id }}/picture">
+	<link rel="shortcut icon" type="img/gif" href="/static/img/icon.gif">
 	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
 	<style type="text/css">
 	    * {
@@ -180,9 +181,9 @@
                 setTimeout(function () {window.scrollTo(0, 0);}, 0);
             }
             
-            var email = location.href.split("?")[1].split("=")[1];
-            if (email.length > 0) {
-                $("#email").val(email);
+            var email = location.href.split("email=");
+            if (email[1]) {
+                $("#email").val(unescape(email[1]));
                 $("#email_form").addClass("error");
             }
             

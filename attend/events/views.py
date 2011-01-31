@@ -1,4 +1,4 @@
-from urllib import urlencode
+from urllib import quote
 from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
@@ -128,6 +128,6 @@ def email(request, event_id):
         
             return redirect('/m/'+event_id+"?success")
         except forms.ValidationError:
-            return redirect('/m/'+event_id+"/?email="+urlencode(addr))
+            return redirect('/m/'+event_id+"/?email="+quote(addr))
     
     
