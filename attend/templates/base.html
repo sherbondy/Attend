@@ -2,13 +2,16 @@
 <html lang="en-us">
 <head>
 	<meta charset="utf-8">
-	<title></title>
+	<title>QR Attend</title>
 	<link rel="stylesheet/less" href="/static/style.less" type="text/css">
 	<link href='http://fonts.googleapis.com/css?family=Arvo:regular,italic,bold,bolditalic' rel='stylesheet' type='text/css'>
 	<script src="/static/less-1.0.41.min.js" type="text/javascript"></script>
 </head>
 <body>
     <div id="top">
+        {% if me %}
+            <p id="user_info">Hello, {{ me.first_name }}. <a href="/logout/">Logout?</a></p>
+        {% endif %}
 	    <h1>QR Attend</h1>
 	</div>
 	

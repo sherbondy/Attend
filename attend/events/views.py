@@ -12,17 +12,25 @@ def home(request):
     if request.user.is_authenticated and request.user.is_active:
         fbuser = request.facebook.graph.get_object("me")
         events = request.facebook.graph.get_connections("me", "events")
+        real_events = []
         now = datetime.now()
         
-        for i, event in enumerate(events["data"]):
-            start = datetime.strptime(event["start_time"], "%Y-%m-%dT%H:%M:%S")
+        for event in events["data"]:
+            event["start_dt"] = datetime.strptime(event["start_time"], "%Y-%m-%dT%H:%M:%S")
+            event["end_dt"] = datetime.strptime(event["end_time"], "%Y-%m-%dT%H:%M:%S")
             
-            if (not event["rsvp_status"] == u'attending') or start < now:
-                events["data"].pop(i)
+            if event["rsvp_status"] == u'attending' and event["start_dt"] > now:
+                new_event = request.facebook.graph.get_object(event["id"])
+                new_event["start_dt"] = datetime.strptime(event["start_time"], "%Y-%m-%dT%H:%M:%S")
+                new_event["end_dt"] = datetime.strptime(event["end_time"], "%Y-%m-%dT%H:%M:%S")
+                
+                if new_event["owner"]["id"] == fbuser["id"] and new_event["privacy"] == u'OPEN': 
+                    real_events.append(new_event)
+        
                 
         return render_to_response('events.html', 
                 {'me':fbuser, 
-                 'events':events}, context_instance=c)
+                 'events':real_events}, context_instance=c)
     else:
         return render_to_response('index.html', {}, context_instance=c)
 
