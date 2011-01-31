@@ -1,5 +1,7 @@
 from django.conf.urls.defaults import *
+import settings
 import socialregistration.urls
+from paths import static_dir
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -15,3 +17,10 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
 )
+
+if settings.DEBUG:
+    urlpatterns += patterns('django.views.static',
+    (r'^static/(?P<path>.*)$', 
+        'serve', {
+        'document_root': static_dir,
+        'show_indexes': True }),)
