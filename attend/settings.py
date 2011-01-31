@@ -1,5 +1,4 @@
 # Django settings for attend project.
-
 from paths import template_dir
 
 DEBUG = True
@@ -67,6 +66,7 @@ FACEBOOK_API_KEY = '1fc564e316561440c9cac4df714c095f'
 FACEBOOK_SECRET_KEY = '4fe10cca8e371150423cb64d71ebc240'
 
 AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
     'socialregistration.auth.FacebookAuth',
 )
 
