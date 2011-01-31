@@ -69,6 +69,9 @@ def event(request,event_id):
         success = True
     
     if success == True:
-        return render_to_response('event.html', {'event_id':event_id}, context_instance=c)
+        event = request.facebook.graph.get_object(event_id)
+        event["start_dt"] = datetime.strptime(event["start_time"], "%Y-%m-%dT%H:%M:%S")
+        event["end_dt"] = datetime.strptime(event["end_time"], "%Y-%m-%dT%H:%M:%S")
+	return render_to_response('event.html', {'event_id':event_id,'event_obj':event}, context_instance=c)
     else:
         return render_to_response('no_event.html', context_instance=c)
