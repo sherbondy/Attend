@@ -5,6 +5,7 @@ from django.template import RequestContext
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from datetime import datetime
+from events.models import *
 
 def home(request):
     c = RequestContext(request)
@@ -27,10 +28,10 @@ def home(request):
                 if new_event["owner"]["id"] == fbuser["id"] and new_event["privacy"] == u'OPEN': 
                     real_events.append(new_event)
         
-                
+        
+	db_events = FacebookEvent.objects.all()
         return render_to_response('events.html', 
-                {'me':fbuser, 
-                 'events':real_events}, context_instance=c)
+                {'me':fbuser, 'events':real_events, 'db_events':db_events}, context_instance=c)
     else:
         return render_to_response('index.html', {}, context_instance=c)
 

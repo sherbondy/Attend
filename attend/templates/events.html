@@ -2,20 +2,33 @@
 
 {% block content %}
 <div id="events">
+    <h2>Events I can create QR codes for:</h2>
+    
     <ul id="e_list">
-    {% for event in events %}
-        {% if event.start_dt %}
-            <li><img src="http://graph.facebook.com/{{ event.id }}/picture">
-                <strong>{{ event.name }}</strong>
-                <em>{{ event.location }}</em>
-                <em>{{ event.start_dt|date:"l, F j" }} 
-                    {% if event.end_dt %} from {% else %} at {% endif %}
-                     {{ event.start_dt|date:"P" }} to {{ event.end_dt|date:"P" }}</em>
-            </li>
-        {% endif %}
-    {% empty %}
-        <li>No events available. Make sure your event is in the future and open to the public.</li>
-    {% endfor %}
-    </ul>  
+        {% for event in events %}
+            {% if event.start_dt %}
+                <li><img src="http://graph.facebook.com/{{ event.id }}/picture">
+                    <strong>{{ event.name }}</strong>
+                    <em>{{ event.location }}</em>
+                    <em>{{ event.start_dt|date:"l, F j" }} 
+                        {% if event.end_dt %} from {% else %} at {% endif %}
+                         {{ event.start_dt|date:"P" }} to {{ event.end_dt|date:"P" }}</em>
+                </li>
+            {% endif %}
+        {% empty %}
+            <li>No events available. Make sure your event is in the 
+                future and open to the public.</li>
+        {% endfor %}
+    </ul>
+    
+    <h2>Events I have already made QR codes for:</h2>
+    
+    <ul id="db_e_list">
+        {% for db_event in db_events %}
+            <li>{{ db_event.facebook_event_id }}</li>
+        {% empty %}
+            <li>You have not made any QR codes.</li>
+        {% endfor %}
+    </ul>
 </div>
 {% endblock %}
