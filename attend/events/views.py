@@ -4,9 +4,11 @@ from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
+from django.core import mail
 from datetime import datetime
 from events.models import *
 import facebook
+import uuid
 
 def home(request):
     c = RequestContext(request)
@@ -77,3 +79,43 @@ def event(request,event_id):
 	return render_to_response('event.html', {'event_id':event_id,'event_obj':event}, context_instance=c)
     else:
         return render_to_response('no_event.html', context_instance=c)
+
+def email(request, event_id):
+    if request.method == "POST":
+        api = facebook.GraphAPI()
+        event = api.get_object(event_id)
+        
+        addr = request.POST["email"]
+    
+        content = """BEGIN:VCALENDAR
+        CALSCALE:GREGORIAN
+        X-WR-TIMEZONE;VALUE=TEXT:US/Eastern
+        METHOD:PUBLISH
+        PRODID:-//Apple Computer\, Inc//iCal 1.0//EN
+        X-WR-CALNAME;VALUE=TEXT:Example
+        VERSION:2.0
+        BEGIN:VEVENT
+        SEQUENCE:5
+        DTSTART;TZID=US/Eastern:{0}
+        DTSTAMP:{0}Z
+        SUMMARY:{1}
+        UID:{2}
+        DTEND;TZID=US/Eastern: {3}
+        BEGIN:VALARM
+        TRIGGER;VALUE=DURATION:-P1D
+        ACTION:DISPLAY
+        DESCRIPTION:Event reminder
+        END:VALARM
+        END:VEVENT
+        END:VCALENDAR""".format(event["start_time"].strip("-"), event["name"], str(uuid.uuid1()), event["end_time"].strip("-"))
+        
+        connection = mail.get_connection()
+        
+        email = mail.EmailMessage('Event from QREvents!', 'Hey there. Attached is the iCal event for {0}'.format(event["name"]),
+                            to=[addr])
+        email.attach("fbevent.ics", content, "text/calendar")
+        email.send()
+        
+        return redirect(home)
+    
+    

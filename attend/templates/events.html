@@ -7,7 +7,7 @@
     <ul id="create_list">
         {% for event in events %}
             {% if event.start_dt %}
-                <li><a href="/create/{{ event.id }}">
+                <li><a href="/event/{{ event.id }}">
                         <img src="http://graph.facebook.com/{{ event.id }}/picture">
                         <p><strong>{{ event.name }}</strong>
                         <em>{{ event.location }}</em>
@@ -31,12 +31,12 @@
             {% if db_event.start_dt %}
                 <li><a href="/event/{{ db_event.id }}">
                         <img src="http://graph.facebook.com/{{ db_event.id }}/picture">
-                        <strong>{{ db_event.name }}</strong>
+                        <p><strong>{{ db_event.name }}</strong>
                         <em>{{ db_event.location }}</em>
                         <em>{{ db_event.start_dt|date:"l, F j" }} 
                             {% if db_event.end_dt %} from {% else %} at {% endif %}
                              {{ db_event.start_dt|date:"P" }} 
-                             to {{ db_event.end_dt|date:"P" }}</em>
+                             to {{ db_event.end_dt|date:"P" }}</em></p>
                     </a>
                 </li>
             {% endif %}

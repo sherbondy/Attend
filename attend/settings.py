@@ -114,6 +114,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
 )
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '587'
+EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
+EMAIL_HOST_PASSWORD = 'TEe6p22s92'
+EMAIL_HOST_USER = 'iam@tooepic.com'
+
 LOGIN_REDIRECT_URL = '/'
 
 SOCIALREGISTRATION_GENERATE_USERNAME = True
