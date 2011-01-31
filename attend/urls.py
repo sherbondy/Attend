@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     # Example:
     (r'^$', 'events.views.home'),
     (r'^logout/', 'events.views.logout_view'),
+    (r'^m/(\d+)/', 'events.views.mobile'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),

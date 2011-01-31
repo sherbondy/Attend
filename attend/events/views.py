@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from datetime import datetime
 from events.models import *
+import facebook
 
 def home(request):
     c = RequestContext(request)
@@ -38,3 +39,9 @@ def home(request):
 def logout_view(request):
     logout(request)
     return redirect(home)
+
+def mobile(request, event_id):
+    c = RequestContext(request)
+    api = facebook.GraphAPI()
+    event = api.get_object(event_id)
+    return render_to_response('mobile.html', {'event':event}, context_instance=c)

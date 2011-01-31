@@ -2,19 +2,21 @@
 
 {% block content %}
 <div id="events">
-    <h2>Click an event to create a QR code:</h2>
+    <h2>Click an event to create its QR code and mobile site:</h2>
     
     <ul id="create_list">
         {% for event in events %}
             {% if event.start_dt %}
                 <li><a href="/create/{{ event.id }}">
-                        <img src="http://graph.facebook.com/{{ event.id }}/picture">
-                        <strong>{{ event.name }}</strong>
+                        <img src="http://graph.facebook.com/{{ event.id }}/picture" 
+                            width="50" height="50">
+                        <p><strong>{{ event.name }}</strong>
                         <em>{{ event.location }}</em>
                         <em>{{ event.start_dt|date:"l, F j" }} 
                             {% if event.end_dt %} from {% else %} at {% endif %}
                              {{ event.start_dt|date:"P" }} 
                              to {{ event.end_dt|date:"P" }}</em>
+                        </p>
                     </a>
                 </li>
             {% endif %}
