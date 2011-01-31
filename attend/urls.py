@@ -9,6 +9,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Example:
     (r'^$', 'events.views.home'),
+    (r'^logout/', 'events.views.logout'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
