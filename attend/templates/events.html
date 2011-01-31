@@ -2,7 +2,7 @@
 
 {% block content %}
 <div id="events">
-    {{ me.first_name }}
+    <h2>Events I can create QR codes for:</h2>
     <ul id="e_list">
     {% for event in events %}
         {% if event.start_dt %}
@@ -16,6 +16,14 @@
     {% empty %}
         <li>No events available. Make sure your event is in the future and open to the public.</li>
     {% endfor %}
-    </ul>  
+    </ul>
+    <h2>Events I have already made QR codes for:</h2>
+    <ul id="db_e_list">
+    {% for db_event in db_events %}
+        <li>{{ db_event.facebook_event_id }}</li>
+    {% empty %}
+        <li>You have not made any QR codes.</li>
+    {% endfor %}
+    </ul>
 </div>
 {% endblock %}
