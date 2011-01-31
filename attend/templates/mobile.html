@@ -6,48 +6,37 @@
 	<link rel="apple-touch-icon" href="http://graph.facebook.com/{{ event.id }}/picture">
 	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
 	<style type="text/css">
-	    html, body, div, span, applet, object, iframe,
-        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-        a, abbr, acronym, address, big, cite, code,
-        del, dfn, em, img, ins, kbd, q, s, samp,
-        small, strike, strong, sub, sup, tt, var,
-        b, u, i, center,
-        dl, dt, dd, ol, ul, li,
-        fieldset, form, label, legend,
-        table, caption, tbody, tfoot, thead, tr, th, td,
-        article, aside, canvas, details, embed, 
-        figure, figcaption, footer, header, hgroup, 
-        menu, nav, output, ruby, section, summary,
-        time, mark, audio, video {
-        	margin: 0;
-        	padding: 0;
-        	border: 0;
-        	font-size: 100%;
-        	font: inherit;
-        	vertical-align: baseline;
+	    * {
+            margin: 0;
+            padding: 0;
+            font-size: 1em;
+            font-size: 100%;
+            text-decoration: none;
+            font-weight: normal;
+            border: none;
+            border-collapse: collapse;
+            list-style: none;
         }
-        /* HTML5 display-role reset for older browsers */
-        article, aside, details, figcaption, figure, 
-        footer, header, hgroup, menu, nav, section {
-        	display: block;
-        }
+
         body {
-        	line-height: 1;
+            max-width: 480px;
+            margin: 0 auto;
+            width: 100%;
+            background: white;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            -webkit-text-size-adjust: none;
         }
-        ol, ul {
-        	list-style: none;
+        body.portrait {
+            min-height: 416px;
         }
-        blockquote, q {
-        	quotes: none;
+        body.landscape {
+            min-height: 268px;
         }
-        blockquote:before, blockquote:after,
-        q:before, q:after {
-        	content: '';
-        	content: none;
+        body.portalone {
+            min-height: 460px;
         }
-        table {
-        	border-collapse: collapse;
-        	border-spacing: 0;
+        body.landalone {
+            min-height: 300px;
         }
         
         
@@ -60,21 +49,82 @@
 	</div>
 	
 	<div id="content">
+	    <img src="http://graph.facebook.com/{{ event.id }}/picture">
+	    <h2>{{ event.name }}</h2>
+	    
+	    <ul>
+	        <li>
+	            <a id="attend" href="{{ event.id }}">Attend!</a>
+	        </li>
+	    </ul>
+	    
+	    <ul>
+	        <li><span>host</span>
+	            <strong>{{ event.owner.name }}</strong>
+	        </li>
+	    </ul>
+	        
+	    <ul>
+	        <li><span>date</span>
+	            <strong>{{ event.start_dt|date:"l, F j" }}</strong>
+	        </li>
+            <li><span>time</span>
+                <strong>{{ event.start_dt|date:"P" }}</strong>
+            </li>
+            <li><span>location</span>
+                <strong>{{ event.location }}</strong></li>
+        </ul>
+        
+        <h3>Description</h3>
+        <ul>
+            <li>{{ event.description }}</li>
+        </ul>
 	</div>
 	
-	<footer>
-	    <p>Created by Ethan, Jacob, and Dennis for 
-	        the 2011 FB Hackathon.</p>
-	    </p>
-	</footer>
+	<div id="fb-root"></div>
 	
 	<script type="text/javascript">
-	    function hideURLbar() {
-                window.scrollTo(0, 1);
-        }
-        
 	    $(document).ready(function(){
-	        if($.os.ios) alert("hi");
+	        function hide_address_bar () {
+                window.scrollTo(0, 1);
+                setTimeout(function () {window.scrollTo(0, 0);}, 0);
+            };
+            
+	        function orientation_changed () {
+                // Update the global variable for tracking current orientation.
+                is_portrait = (window.orientation == 0 ||
+                               window.orientation == null);
+
+                // Update the styles
+                mutual_text = is_portrait ? '(m)' : '(mutual)';
+                $('.mutual').text(mutual_text);
+
+                if (window.navigator.standalone) {
+                    $('body').attr('class','').addClass(is_portrait ? 'portalone' : 'landalone');
+                }
+                else {
+                    $('body').attr('class','').addClass(is_portrait ? 'portrait' : 'landscape');
+                    setTimeout(hide_address_bar, 100);
+                }
+            }
+            
+            window.fbAsyncInit = function() {
+                FB.init({appId: 'your app id', status: true, cookie: true,
+                         xfbml: true});
+              };
+              (function() {
+                var e = document.createElement('script'); e.async = true;
+                e.src = document.location.protocol +
+                  '//connect.facebook.net/en_US/all.js';
+                document.getElementById('fb-root').appendChild(e);
+            }());
+            
+	        if($.os.ios) {
+	            window.addEventListener('orientationchange', orientation_changed, false);
+                orientation_changed();
+                // Hides toolbar on iPhone
+                setTimeout(hide_address_bar, 100);
+            }
         });
 	</script>
 </body>
