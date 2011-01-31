@@ -18,6 +18,8 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
 
     (r'^sr/', include('socialregistration.urls')),
+
+    (r'^event/([0-9]+)$', 'events.views.event'),
 )
 
 if settings.DEBUG:
