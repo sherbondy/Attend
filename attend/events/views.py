@@ -10,7 +10,7 @@ def home(request):
     
     if request.user.is_authenticated and request.user.is_active:
         fbuser = request.facebook.graph.get_object("me")
-        return render_to_response('events.html', {}, context_instance=c)
+        return render_to_response('events.html', {'me':fbuser}, context_instance=c)
     else:
         return render_to_response('index.html', {}, context_instance=c)
 
