@@ -1,0 +1,1 @@
+template_dir = '/Users/ethan/Attend/attend/templates'
