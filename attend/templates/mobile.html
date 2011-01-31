@@ -147,7 +147,7 @@
 	    
         <form id="email_form" action="/email/{{ event.id }}" method="post">
             {% csrf_token %}
-            <input name="email" id="email" type="email" placeholder="Email iCal Event!">
+            <input name="email" id="email" type="email" placeholder="Email iCal Event!" autocorrect="off" autocapitalize="off">
         </form>
 	    
 	    <ul>
