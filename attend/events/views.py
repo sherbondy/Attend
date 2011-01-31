@@ -51,6 +51,8 @@ def mobile(request, event_id):
     c = RequestContext(request)
     api = facebook.GraphAPI()
     event = api.get_object(event_id)
+    event["start_dt"] = datetime.strptime(event["start_time"], "%Y-%m-%dT%H:%M:%S")
+    event["end_dt"] = datetime.strptime(event["end_time"], "%Y-%m-%dT%H:%M:%S")
     return render_to_response('mobile.html', {'event':event}, context_instance=c)
 
 def event(request,event_id):
