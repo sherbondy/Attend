@@ -132,6 +132,20 @@
             color: #fff;
         }
         
+        #fb {
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            background: #3b5998;
+            padding: 8px 12px;
+            -webkit-border-radius: 32px;
+            -moz-border-radius: 32px;
+            border-radius: 32px;
+            text-shadow: 0px 1px 0px #000;
+            margin-right:8px;
+        }
+        
 	</style>
 	<script src="/static/zepto.min.js" type="text/javascript"></script>
 </head>
@@ -142,6 +156,7 @@
 	
 	<div id="content">
 	    <img src="http://graph.facebook.com/{{ event.id }}/picture">
+	    <a id="fb" href="http://touch.facebook.com/#/event.php?eid={{ event.id }}">fb</a>
 	    <h2>{{ event.name }}</h2>
 	    <h3>{{ event.start_dt|date:"l, F j" }}</h3>
 	    
