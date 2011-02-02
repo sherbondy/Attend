@@ -147,7 +147,8 @@
 	    
         <form id="email_form" action="/email/{{ event.id }}" method="post">
             {% csrf_token %}
-            <input name="email" id="email" type="email" placeholder="Email iCal Event!">
+            <input name="email" id="email" type="email" placeholder="Email iCal Event!"
+                autocapitalize="off" autocorrect="off" autocomplete="off">
         </form>
 	    
 	    <ul>
@@ -158,7 +159,7 @@
 	        
 	    <ul>
             <li><span>time</span>
-                <strong>{{ event.start_dt|date:"P" }}</strong>
+                <strong>{{ event.start_dt|date:"P" }}—{{ event.end_dt|date:"P" }}</strong>
             </li>
             <li id="location">
                 <a href="http://maps.google.com/?q={{ event.location|urlencode }}">
