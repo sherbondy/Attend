@@ -15,7 +15,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ethanis+attend',
         'USER': 'ethanis',
-        'PASSWORD': 'yeh00dab',
+        'PASSWORD': 'SQLe6p22s92',
         'HOST': 'sql.mit.edu',
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
