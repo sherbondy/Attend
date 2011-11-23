@@ -94,7 +94,8 @@ def mobile(request, event_id):
     api = facebook.GraphAPI()
     event = api.get_object(event_id)
     event = start_end(event)
-    return render('mobile.html', {'event':event}, request)
+    success = request.GET.__contains__('success')
+    return render('mobile.html', {'event':event, 'success':success}, request)
 
 def event(request,event_id):
     c = RequestContext(request)
