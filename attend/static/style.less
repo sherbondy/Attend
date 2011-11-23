@@ -3,14 +3,6 @@
    License: none (public domain)
 */
 
-@green: #67a637;
-
-.rounded(@amounts) {
-    -webkit-border-radius: @amounts;
-    -moz-border-radius: @amounts;
-    border-radius: @amounts;
-}
-
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -67,7 +59,7 @@ h1, h2 {
     text-shadow: 0px 1px 0px #fff;
 }
 #top {
-    background: @green;
+    background: #6ec435;
     margin-bottom: 32px;
 }
 h1 {
@@ -135,17 +127,17 @@ a {
     }
     a {
         display: block;
-        color: darken(@green, 10%);
+        color: darken(#6ec435, 10%);
         text-decoration: none;
         &:hover p {
-            background: @green;
+            background: #6ec435;
             color: #fff;
         }
     }
     p {
         padding: 8px 16px;
         background: #fff;
-        border-left: 2px solid @green;
+        border-left: 2px solid #6ec435;
     }
     strong {
         display: block;
@@ -156,43 +148,9 @@ a {
         display: block;
         font-size: 14px;
     }
-    .fb {
-        float: right;
-        font-size: 32px;
-        font-weight: bold;
-        color: #fff;
-        background: #3b5998;
-        padding: 8px 16px;
-        .rounded(32px);
-        text-shadow: 0px 1px 0px #000;
-    }
-}
-
-#slider {
-    width: 640px;
-    height: 16px;
-    margin-bottom: 16px;
-    .rounded(16px);
 }
 
 footer {
     margin: 64px 0;
     text-align: center;
 }
-
-/* jQuery UI Cruft */
-
-.ui-slider { position: relative; text-align: left; background-color:#fff; }
-.ui-slider .ui-slider-handle { 
-    position: absolute; z-index: 2; width: 24px; height: 24px; cursor: default; 
-    background-color:@green; .rounded(32px); 
-    &.ui-state-hover, &.ui-state-active, &.ui-state-focus {
-        outline: none;
-        background-color: darken(@green, 10%);
-    }
-}
-
-.ui-slider-horizontal .ui-slider-handle { top: -4px; margin-left: -12px; }
-.ui-slider-horizontal .ui-slider-range { top: 0; height: 100%; }
-.ui-slider-horizontal .ui-slider-range-min { left: 0; }
-.ui-slider-horizontal .ui-slider-range-max { right: 0; }

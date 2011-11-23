@@ -1,5 +1,3 @@
 paths.py
 *.pyc
-secrets.py
-*.bak
 attend/attend.db

@@ -4,45 +4,25 @@
 
 <h2>Save this image and print it on your event poster!</h2>
 
-<ul id="db_list">
-	<li>
-		<a target="_blank" href="http://www.facebook.com/event.php?eid={{ event_obj.id }}">
-			<img src="http://graph.facebook.com/{{ event_obj.id }}/picture" width="50" height="50">
-			<p>
-				<span class="fb">fb</span>
-				<strong>{{ event_obj.name }}</strong>
-				<em>{{ event_obj.location }}</em>
-				<em>{{ event_obj.start_dt|date:"l, F j" }} 
-					{% if event_obj.end_dt %} from {% else %} at {% endif %}
-					{{ event_obj.start_dt|date:"P" }} 
-					to {{ event_obj.end_dt|date:"P" }}</em>
-			</p>
-		</a>
-	</li>
+<ul id="db_list"><li><a target="_blank" href="http://www.facebook.com/event.php?eid={{ event_obj.id }}">
+<img src="http://graph.facebook.com/{{ event_obj.id }}/picture" width="50" height="50">
+<p><strong>{{ event_obj.name }}</strong>
+<em>{{ event_obj.location }}</em>
+<em>{{ event_obj.start_dt|date:"l, F j" }} 
+{% if event_obj.end_dt %} from {% else %} at {% endif %}
+{{ event_obj.start_dt|date:"P" }} 
+to {{ event_obj.end_dt|date:"P" }}</em>(click to see on Facebook)
+</p></a>
+</li></ul>
+
+<a target="_blank" href="https://chart.googleapis.com/chart?chs=250x250&cht=qr&choe=UTF-8&chl=http%3A%2F%2Fwww.qrattend.me%2Fm%2F{{ event_id|escape }}"><img src="https://chart.googleapis.com/chart?chs=250x250&cht=qr&choe=UTF-8&chl=http%3A%2F%2Fwww.qrattend.me%2Fm%2F{{ event_id|escape }}" /></a>
+
+<p>Click the above image, or choose another size:</p>
+<ul>
+<li><a target="_blank" href="https://chart.googleapis.com/chart?chs=125x125&cht=qr&choe=UTF-8&chl=http%3A%2F%2Fwww.qrattend.me%2Fm%2F{{ event_id|escape }}">Smaller</a></li>
+<li><a target="_blank" href="https://chart.googleapis.com/chart?chs=500x500&cht=qr&choe=UTF-8&chl=http%3A%2F%2Fwww.qrattend.me%2Fm%2F{{ event_id|escape }}">Larger</a></li>
 </ul>
 
-<h2>Click the image below or resize it with the slider:</h2>
-
-<div id="slider"></div>
-
-<a target="_blank" id="qr_a" href="https://chart.googleapis.com/chart?chs=250x250&cht=qr&choe=UTF-8&chl=http%3A%2F%2Fwww.qrattend.me%2Fm%2F{{ event_id|escape }}"><img id="qr_img" src="https://chart.googleapis.com/chart?chs=250x250&cht=qr&choe=UTF-8&chl=http%3A%2F%2Fwww.qrattend.me%2Fm%2F{{ event_id|escape }}" /></a>
-
-<script type="text/javascript">
-	$(function() {
-		var base = "https://chart.googleapis.com/chart?chs=";
-		var end = "&cht=qr&choe=UTF-8&chl=http%3A%2F%2Fwww.qrattend.me%2Fm%2F{{ event_id|escape }}";
-		$( "#slider" ).slider({
-			range: "min",
-			value: 250,
-			min: 50,
-			max: 500,
-			step: 25,
-			slide: function( event, ui ) {
-				$( "#qr_img" ).attr("src", base+ui.value+"x"+ui.value+end);
-				$( "#qr_a" ).attr("href", base+ui.value+"x"+ui.value+end);
-			}
-		});
-	});
-</script>
+<p><a href="/">Return home.</a></p>
 
 {% endblock %}
