@@ -1,0 +1,131 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-size: 1em;
+  font-size: 100%;
+  text-decoration: none;
+  font-weight: normal;
+  border: none;
+  border-collapse: collapse;
+  list-style: none;
+}
+body {
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+  background: white;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-text-size-adjust: none;
+}
+body.portrait {
+  min-height: 416px;
+}
+body.landscape {
+  min-height: 268px;
+}
+body.portalone {
+  min-height: 460px;
+}
+body.landalone {
+  min-height: 300px;
+}
+#top {
+  font-size: 20px;
+  background: #67a637;
+  padding: 8px;
+  margin-bottom: 8px;
+}
+h1 a, h2 {
+  font-weight: bold;
+}
+h1 a {
+  color: #000;
+  text-shadow: 0px 1px 0px #fff;
+}
+img {
+  float: left;
+  margin-right: 16px;
+  margin-left: 8px;
+  margin-bottom: 8px;
+  width: 50px;
+  height: 50px;
+}
+h2 {
+  font-size: 18px;
+}
+h3 {
+  margin-left: 8px;
+  font-weight: bold;
+  color: #666;
+}
+#content ul {
+  clear: both;
+  margin: 8px;
+}
+ul li {
+  background: #efefef;
+  padding: 8px;
+  border-bottom: 1px solid #fff;
+}
+li:first-child {
+  -webkit-border-radius: 8px 8px 0 0;
+}
+li:last-child {
+  -webkit-border-radius: 0px 0px 8px 8px;
+  border: none;
+}
+li:first-child:last-child {
+  -webkit-border-radius: 8px;
+}
+li span {
+  font-weight: bold;
+  color: #67a637;
+  display: block;
+  float: left;
+  width: 80px;
+}
+li strong {
+  display: block;
+  margin-left: 90px;
+}
+#email_form {
+  clear: both;
+  display: block;
+  margin: 8px;
+  background: #67a637;
+  -webkit-border-radius: 8px;
+}
+#email_form.error {
+  background: #bd2612;
+}
+#email {
+  font-family: inherit;
+  display: block;
+  padding: 8px;
+  width: 90%;
+  background: none;
+  outline: none;
+  color: #fff;
+}
+input::-webkit-input-placeholder {
+  color: #fff;
+}
+#location {
+  background: #67a637;
+}
+#location a, #location span {
+  color: #fff;
+}
+#fb {
+  float: right;
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  background: #3b5998;
+  padding: 8px 12px;
+  -webkit-border-radius: 32px;
+  -moz-border-radius: 32px;
+  border-radius: 32px;
+  text-shadow: 0px 1px 0px #000;
+  margin-right: 8px;
+}

@@ -232,17 +232,6 @@ a:active {
   border-radius: 32px;
   text-shadow: 0px 1px 0px #000;
 }
-#success {
-  position: absolute;
-  background: #67a637;
-  width: 100%
-    padding: 8px 0;
-}
-#success p {
-  color: #fff;
-  font-size: 16px
-        margin: 0 16px;
-}
 #slider {
   width: 640px;
   height: 18px;

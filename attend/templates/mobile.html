@@ -1,185 +1,40 @@
 <!DOCTYPE HTML>
 <html lang="en-us">
 <head>
-	<meta charset="utf-8">
-	<title>QR Attend: {{ event.name }}</title>
-	<link rel="apple-touch-icon" href="http://graph.facebook.com/{{ event.id }}/picture">
-	<link rel="shortcut icon" type="img/gif" href="/static/img/icon.gif">
-	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
-	<style type="text/css">
-	    * {
-            margin: 0;
-            padding: 0;
-            font-size: 1em;
-            font-size: 100%;
-            text-decoration: none;
-            font-weight: normal;
-            border: none;
-            border-collapse: collapse;
-            list-style: none;
-        }
-
-        body {
-            max-width: 480px;
-            margin: 0 auto;
-            width: 100%;
-            background: white;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            -webkit-text-size-adjust: none;
-        }
-        body.portrait {
-            min-height: 416px;
-        }
-        body.landscape {
-            min-height: 268px;
-        }
-        body.portalone {
-            min-height: 460px;
-        }
-        body.landalone {
-            min-height: 300px;
-        }
-        
-        #top {
-            font-size: 20px;
-            background: #67a637;
-            padding: 8px;
-            margin-bottom: 8px;
-        }
-        h1 a, h2 {
-            font-weight: bold;
-        }
-        h1 a {
-            color: #000;
-            text-shadow: 0px 1px 0px #fff;
-        }
-        img {
-            float: left;
-            margin-right: 16px;
-            margin-left: 8px;
-            margin-bottom: 8px;
-            width: 50px;
-            height: 50px;
-        }
-        h2 {
-            font-size: 18px;
-        }
-        h3 {
-            margin-left: 8px;
-            font-weight: bold;
-            color: #666;
-        }
-        
-        #content ul {
-            clear:both;
-            margin: 8px;
-        }
-        
-        ul li {
-            background: #efefef;
-            padding: 8px;
-            border-bottom: 1px solid #fff;
-        }
-        li:first-child {
-            -webkit-border-radius: 8px 8px 0 0;
-        }
-        li:last-child {
-            -webkit-border-radius: 0px 0px 8px 8px;
-            border: none;
-        }
-        li:first-child:last-child {
-            -webkit-border-radius: 8px;
-        }
-            
-        li span {
-            font-weight: bold;
-            color: #67a637;
-            display: block;
-            float:left;
-            width: 80px;
-        }
-        li strong {
-            display: block;
-            margin-left: 90px;
-        }
-        
-        #email_form {
-            clear: both;
-            display: block;
-            margin: 8px;
-            background: #67a637;
-            -webkit-border-radius: 8px;
-        }
-        #email_form.error {
-            background: #bd2612;
-        }
-        #email {
-            font-family: inherit;
-            display: block;
-            padding: 8px;
-            width: 90%;
-            background: none;
-            outline: none;
-            color: #fff;
-        }
-        input::-webkit-input-placeholder {
-            color: #fff;
-        }
-        #location {
-            background: #67a637;
-        }
-        #location a, #location span {
-            color: #fff;
-        }
-        
-        #fb {
-            float: right;
-            font-size: 24px;
-            font-weight: bold;
-            color: #fff;
-            background: #3b5998;
-            padding: 8px 12px;
-            -webkit-border-radius: 32px;
-            -moz-border-radius: 32px;
-            border-radius: 32px;
-            text-shadow: 0px 1px 0px #000;
-            margin-right:8px;
-        }
-        
-	</style>
-	<script src="/static/zepto.min.js" type="text/javascript"></script>
+    <meta charset="utf-8">
+    <title>QR Attend: {{ event.name }}</title>
+    <link rel="apple-touch-icon" href="http://graph.facebook.com/{{ event.id }}/picture">
+    <link rel="shortcut icon" type="img/gif" href="/static/img/icon.gif">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/static/mobile.css">
+    <script src="/static/zepto.min.js" type="text/javascript"></script>
 </head>
 <body>
-    {% if success %}
-    <div id="success">
-        <p>Check your email for the calendar event.</p>
-    </div>
-    {% endif %}
-
-
     <div id="top">
-	    <h1><a href="/">QR Attend</a></h1>
-	</div>
-	
-	<div id="content">
-	    <img src="http://graph.facebook.com/{{ event.id }}/picture">
-	    <a id="fb" href="http://touch.facebook.com/#/event.php?eid={{ event.id }}">fb</a>
-	    <h2>{{ event.name }}</h2>
-	    <h3>{{ event.start_dt|date:"l, F j" }}</h3>
-	    
+        <h1><a href="/">QR Attend</a></h1>
+    </div>
+    
+    <div id="content">
+        <img src="http://graph.facebook.com/{{ event.id }}/picture">
+        <a id="fb" href="http://touch.facebook.com/#/event.php?eid={{ event.id }}">fb</a>
+        <h2>{{ event.name }}</h2>
+        <h3>{{ event.start_dt|date:"l, F j" }}</h3>
+        
         <form id="email_form" action="/email/{{ event.id }}" method="post">
             {% csrf_token %}
-            <input name="email" id="email" type="email" placeholder="Email iCal Event!"
-                autocapitalize="off" autocorrect="off">
+            <input name="email" id="email" type="email" placeholder="{% spaceless %}
+                {% if success %}Check your email for the calendar event.
+                {% else %}Email iCal Event!{% endif %}"
+                {% endspaceless %} autocapitalize="off" autocorrect="off">
         </form>
-	    
-	    <ul>
-	        <li><span>host</span>
-	            <strong>{{ event.owner.name }}</strong>
-	        </li>
-	    </ul>
-	        
-	    <ul>
+        
+        <ul>
+            <li><span>host</span>
+                <strong>{{ event.owner.name }}</strong>
+            </li>
+        </ul>
+            
+        <ul>
             <li><span>time</span>
                 <strong>{{ event.start_dt|date:"P" }}—{{ event.end_dt|date:"P" }}</strong>
             </li>
@@ -195,11 +50,11 @@
         <ul>
             <li>{{ event.description }}</li>
         </ul>
-	</div>
-		
-	<script type="text/javascript">
-	    $(document).ready(function(){
-	        function hide_address_bar () {
+    </div>
+        
+    <script type="text/javascript">
+        $(document).ready(function(){
+            function hide_address_bar () {
                 window.scrollTo(0, 1);
                 setTimeout(function () {window.scrollTo(0, 0);}, 0);
             }
@@ -219,7 +74,7 @@
                 }   
             });
             
-	        function orientation_changed () {
+            function orientation_changed () {
                 // Update the global variable for tracking current orientation.
                 is_portrait = (window.orientation == 0 ||
                                window.orientation == null);
@@ -237,13 +92,13 @@
                 }
             }
             
-	        if($.os.ios) {
-	            window.addEventListener('orientationchange', orientation_changed, false);
+            if($.os.ios) {
+                window.addEventListener('orientationchange', orientation_changed, false);
                 orientation_changed();
                 // Hides toolbar on iPhone
                 setTimeout(hide_address_bar, 100);
             }
         });
-	</script>
+    </script>
 </body>
 </html>
