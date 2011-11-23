@@ -103,6 +103,13 @@
 	<script src="/static/zepto.min.js" type="text/javascript"></script>
 </head>
 <body>
+    {% if success %}
+    <div id="success">
+        <p>Check your email for the calendar event.</p>
+    </div>
+    {% endif %}
+
+
     <div id="top">
 	    <h1>QR Attend</h1>
 	</div>
