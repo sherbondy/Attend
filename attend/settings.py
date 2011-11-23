@@ -12,11 +12,11 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'attend.db',             # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ethanis+attend',
+        'USER': 'ethanis',
+        'PASSWORD': 'yeh00dab',
+        'HOST': 'sql.mit.edu',
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
@@ -56,10 +56,10 @@ MEDIA_URL = '/static/'
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/'
+ADMIN_MEDIA_PREFIX = '/__scripts/django/Attend/attend/static/'
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '-dwx5_cn#7otil(r8972%cfx!^67-dgnbobs1u2va%d)ovupmv'
+SECRET_KEY = 'cf@ws019xf+0eotvvf(&f$+yh%!hc+1u_a0u_x_-qiq&c%i!n@'
 
 # Facebook stuff for socialregistration
 FACEBOOK_API_KEY = '1fc564e316561440c9cac4df714c095f'
@@ -113,12 +113,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.contrib.auth.context_processors.auth',
 )
-
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = '587'
-EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
-EMAIL_HOST_PASSWORD = 'TEe6p22s92'
-EMAIL_HOST_USER = 'iam@tooepic.com'
 
 LOGIN_REDIRECT_URL = '/'
 

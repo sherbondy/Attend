@@ -135,7 +135,7 @@ h1, h2 {
   text-shadow: 0px 1px 0px #fff;
 }
 #top {
-  background: #6ec435;
+  background: #67a637;
   margin-bottom: 32px;
 }
 h1 {
@@ -185,42 +185,97 @@ a:active {
 #user_info a:hover {
   color: #efefef;
 }
-#create_list, #db_list {
+#create_list, #db_list, #friends_list {
   list-style: none;
   margin-left: 0;
 }
-#create_list li, #db_list li {
+#create_list li, #db_list li, #friends_list li {
   clear: both;
   margin-bottom: 8px;
 }
-#create_list img, #db_list img {
+#create_list img, #db_list img, #friends_list img {
   float: left;
   margin-left: -50px;
 }
-#create_list a, #db_list a {
+#create_list a, #db_list a, #friends_list a {
   display: block;
-  color: #579c2a;
+  color: #4f802a;
   text-decoration: none;
 }
-#create_list a:hover p, #db_list a:hover p {
-  background: #6ec435;
+#create_list a:hover p, #db_list a:hover p, #friends_list a:hover p {
+  background: #67a637;
   color: #fff;
 }
-#create_list p, #db_list p {
+#create_list p, #db_list p, #friends_list p {
   padding: 8px 16px;
   background: #fff;
-  border-left: 2px solid #6ec435;
+  border-left: 2px solid #67a637;
 }
-#create_list strong, #db_list strong {
+#create_list strong, #db_list strong, #friends_list strong {
   display: block;
   color: #000;
   font-weight: bold;
 }
-#create_list em, #db_list em {
+#create_list em, #db_list em, #friends_list em {
   display: block;
   font-size: 14px;
+}
+#create_list .fb, #db_list .fb, #friends_list .fb {
+  float: right;
+  font-size: 32px;
+  font-weight: bold;
+  color: #fff;
+  background: #3b5998;
+  padding: 8px 16px;
+  -webkit-border-radius: 32px;
+  -moz-border-radius: 32px;
+  border-radius: 32px;
+  text-shadow: 0px 1px 0px #000;
+}
+#slider {
+  width: 640px;
+  height: 16px;
+  margin-bottom: 16px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  border-radius: 16px;
 }
 footer {
   margin: 64px 0;
   text-align: center;
+}
+/* jQuery UI Cruft */
+.ui-slider {
+  position: relative;
+  text-align: left;
+  background-color: #fff;
+}
+.ui-slider .ui-slider-handle {
+  position: absolute;
+  z-index: 2;
+  width: 24px;
+  height: 24px;
+  cursor: default;
+  background-color: #67a637;
+  -webkit-border-radius: 32px;
+  -moz-border-radius: 32px;
+  border-radius: 32px;
+}
+.ui-slider .ui-slider-handle.ui-state-hover, .ui-slider .ui-slider-handle.ui-state-active, .ui-slider .ui-slider-handle.ui-state-focus {
+  outline: none;
+  background-color: #4f802a;
+}
+.ui-slider-horizontal .ui-slider-handle {
+  top: -4px;
+  margin-left: -12px;
+}
+.ui-slider-horizontal .ui-slider-range {
+  top: 0;
+  height: 100%;
+}
+.ui-slider-horizontal .ui-slider-range-min {
+  left: 0;
+}
+.ui-slider-horizontal .ui-slider-range-max {
+  right: 0;
 }
