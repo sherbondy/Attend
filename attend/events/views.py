@@ -130,7 +130,7 @@ def email(request, event_id):
                                   event["name"], event["location"], event["description"],
                                   event["id"])
         
-            email = mail.EmailMessage('Event from QREvents!', 'Hey there. Attached is the iCal event for {0}'.format(event["name"]),
+            email = mail.EmailMessage('Event from QR Attend!', 'Hey there. Attached is the iCal event for {0}'.format(event["name"]),
                                 to=[addr])
             email.attach("fbevent.ics", content, "text/calendar")
             email.send()
