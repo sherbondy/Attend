@@ -62,8 +62,8 @@ ADMIN_MEDIA_PREFIX = '/media/'
 SECRET_KEY = 'cf@ws019xf+0eotvvf(&f$+yh%!hc+1u_a0u_x_-qiq&c%i!n@'
 
 # Facebook stuff for socialregistration
-FACEBOOK_API_KEY = '1fc564e316561440c9cac4df714c095f'
-FACEBOOK_SECRET_KEY = '4fe10cca8e371150423cb64d71ebc240'
+FACEBOOK_API_KEY = '188828771140787'
+FACEBOOK_SECRET_KEY = '15e67f22052e8ef1bdb17c4528953abf'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
