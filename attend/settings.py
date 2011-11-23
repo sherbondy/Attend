@@ -1,5 +1,5 @@
 # Django settings for attend project.
-from paths import template_dir
+from paths import template_dir, db_file
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -12,11 +12,11 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ethanis+attend',
-        'USER': 'ethanis',
-        'PASSWORD': 'yeh00dab',
-        'HOST': 'sql.mit.edu',
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': db_file,             # Or path to database file if using sqlite3.
+        'USER': '',                      # Not used with sqlite3.
+        'PASSWORD': '',                  # Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
@@ -61,9 +61,13 @@ ADMIN_MEDIA_PREFIX = '/__scripts/django/Attend/attend/static/'
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'cf@ws019xf+0eotvvf(&f$+yh%!hc+1u_a0u_x_-qiq&c%i!n@'
 
-# Facebook stuff for socialregistration
-FACEBOOK_API_KEY = '1fc564e316561440c9cac4df714c095f'
-FACEBOOK_SECRET_KEY = '4fe10cca8e371150423cb64d71ebc240'
+# Facebook stuff for socialregistration, These are the real ones:
+# FACEBOOK_API_KEY = '1fc564e316561440c9cac4df714c095f'
+# FACEBOOK_SECRET_KEY = '4fe10cca8e371150423cb64d71ebc240'
+
+# Development version
+FACEBOOK_API_KEY = '8a2f64d82b849a96e1f694f3dd8882b3'
+FACEBOOK_SECRET_KEY = '15e67f22052e8ef1bdb17c4528953abf'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
@@ -114,6 +118,11 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
 )
 
+<<<<<<< HEAD
+=======
+EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
+
+>>>>>>> 052bf70d05d38692195236de787f17c4cdf7dfc3
 LOGIN_REDIRECT_URL = '/'
 
 SOCIALREGISTRATION_GENERATE_USERNAME = True
